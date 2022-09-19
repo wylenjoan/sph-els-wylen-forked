@@ -3,9 +3,16 @@ from .models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
+  first_name = serializers.CharField(max_length=150, required=True)
+  last_name = serializers.CharField(max_length=150, required=True)
+  email = serializers.CharField(max_length=150, required=True)
+  is_admin = serializers.BooleanField(required=True)
+  password = serializers.CharField(max_length=255, required=True, write_only=True)
+
   class Meta:
-    model = User
-    exclude = ['password']
+    model = AppUser
+    exclude= ['is_staff', 'is_active', 'date_joined', 'last_login', 
+              'is_superuser', 'groups', 'user_permissions']
 
 
 class UserRelationSerializer(serializers.ModelSerializer):
