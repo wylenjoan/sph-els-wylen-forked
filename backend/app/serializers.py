@@ -6,13 +6,22 @@ class UserSerializer(serializers.ModelSerializer):
   first_name = serializers.CharField(max_length=150, required=True)
   last_name = serializers.CharField(max_length=150, required=True)
   email = serializers.CharField(max_length=150, required=True)
-  is_admin = serializers.BooleanField(required=True)
-  password = serializers.CharField(max_length=255, required=True, write_only=True)
+  is_admin = serializers.BooleanField(required=False)
+  password = serializers.CharField(
+    min_length=8,
+    max_length=32, 
+    required=True, 
+    write_only=True,
+    style={'input_type': 'password'},
+  )
 
   class Meta:
     model = AppUser
     exclude= ['is_staff', 'is_active', 'date_joined', 'last_login', 
               'is_superuser', 'groups', 'user_permissions']
+
+  def create(self, validated_data):
+      return AppUser.objects.create_user(**validated_data)
 
 
 class UserRelationSerializer(serializers.ModelSerializer):
