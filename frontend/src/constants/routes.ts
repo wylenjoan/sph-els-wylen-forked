@@ -1,6 +1,9 @@
 enum Routes {
   ROOT = "/",
-  REGISTRATION = "/registration"
+  REGISTRATION = "/registration",
+  LOGIN = "/login",
+  ADMIN = "/admin",
+  USER = "/user",
 }
 
 export default Routes;

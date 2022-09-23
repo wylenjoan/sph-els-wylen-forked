@@ -1,10 +1,17 @@
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import generics, serializers, status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.middleware.csrf import get_token
 
 from .models import *
 from .serializers import *
+
+
+@api_view()
+def csrf(request):
+  return Response({'csrfToken': get_token(request)})
 
 
 class RegisterUser(APIView):
@@ -31,13 +38,22 @@ class LoginUser(APIView):
     password = request.data["password"]
 
     if email and password:
-      user = authenticate(request=request, username=email, password=password)
+      authenticated_user = authenticate(request=request, username=email, password=password)
 
       response = None
 
-      if user:
-        login(request, user)
-        response = Response({'email': email}, status=status.HTTP_200_OK)
+      if authenticated_user:
+        login(request, authenticated_user)
+        user = AppUser.objects.get(email=email)
+
+        user_dict = {
+          "first_name": user.first_name,
+          "last_name": user.last_name,
+          "email": user.email,
+          "is_admin": user.is_admin
+        }
+
+        response = Response({'user': user_dict}, status=status.HTTP_200_OK)
       else:
         response = Response(None, status=status.HTTP_401_UNAUTHORIZED)
 

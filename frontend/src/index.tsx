@@ -1,26 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import Registration from './pages/Registration';
-
-import routes from './constants/routes';
-
-const router = createBrowserRouter([
-  {
-    path: `${routes.ROOT}`,
-    element: <App />,
-  },
-  {
-    path: `${routes.REGISTRATION}`,
-    element: <Registration />,
-  },
-]);
+import { AuthProvider } from './context/AuthProvider';
+import App from './App';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -29,7 +12,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 );
 

@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import axios from "axios";
 import { Alert, Button, Form } from 'react-bootstrap';
-import apiUrls from "../constants/apiUrls"
-import axiosConfig from '../constants/axiosConfig';
 import User from '../interfaces/user';
-
-const client = axios.create(axiosConfig);
+import { registerUser } from '../apiClient/userService';
+import { useNavigate } from 'react-router-dom';
+import routes from '../constants/routes';
 
 function Registration() {
   const emptyUser = {
@@ -16,18 +15,9 @@ function Registration() {
     is_admin: false,
   };
 
+  const navigate = useNavigate();
   const [user, setUser] = useState<User>(emptyUser)
   const [error, setError] = useState<string>('')
-
-  async function registerUser() {
-    try {
-      await client.post(`${apiUrls.REGISTRATION}`, user)
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        setError(`${err.request.status} ${err.request.statusText}`);
-      }
-    }
-  }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const {
@@ -40,9 +30,16 @@ function Registration() {
     }))
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    registerUser();
+    try {
+      await registerUser(user);
+      navigate(routes.LOGIN, { replace: true })
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(`${err.request.status} ${err.request.statusText}`);
+      }
+    };
     setUser(emptyUser);
     setError('')
   }

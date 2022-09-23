@@ -9,6 +9,7 @@ class UserManager(auth_models.BaseUserManager):
         last_name: str,
         email: str,
         password: str = None,
+        is_admin=False,
         is_staff=False,
         is_superuser=False,
     ) -> "AppUser":
@@ -23,6 +24,7 @@ class UserManager(auth_models.BaseUserManager):
         user.first_name = first_name
         user.last_name = last_name
         user.set_password(password)
+        user.is_admin = is_admin
         user.is_active = True
         user.is_staff = is_staff
         user.is_superuser = is_superuser
