@@ -9,7 +9,8 @@ const loginUser = async (credentials: AuthCredentials) => {
 const logoutUser = async () => {
   let response = await axiosClient.post(`${apiUrls.LOGOUT}`)
   if (response.status === 200) {
-    localStorage.removeItem('user')
+    localStorage.removeItem('user');
+    window.location.reload();
   }
 }
 

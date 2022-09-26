@@ -5,9 +5,8 @@ import routes from './constants/routes';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
 import PrivateRoute from './pages/PrivateRoute';
-import Admin from './pages/Admin';
-import AdminDashboard from './pages/admin/AdminDashboard';
-import User from './pages/User';
+import CategoryList from './pages/admin/CategoryList';
+import UserList from './pages/admin/UserList';
 
 
 function App() {
@@ -18,12 +17,8 @@ function App() {
         <Route path={routes.LOGIN} element={<Login />} />
 
         <Route path={routes.ROOT} element={<PrivateRoute />}>
-          <Route element={<Admin />} >
-            <Route path='' element={<AdminDashboard />} />
-          </Route>
-
-          <Route path={routes.USER} element={<User />} />
-
+          <Route path={routes.CATEGORY_LIST} element={<CategoryList />} />
+          <Route path={routes.USER_LIST} element={<UserList />} />
         </Route>
 
       </Routes>
