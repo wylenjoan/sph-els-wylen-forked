@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework import generics, serializers, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.middleware.csrf import get_token
 
@@ -67,3 +68,15 @@ class LogoutUser(APIView):
   def post(self, request):
     logout(request)
     return Response(None, status=status.HTTP_200_OK)
+
+
+class ListCreateCategory(generics.ListCreateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Category.objects.all()
+  serializer_class = CategorySerializer
+
+
+class GetUpdateDeleteCategory(generics.RetrieveUpdateDestroyAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Category.objects.all()
+  serializer_class = CategorySerializer

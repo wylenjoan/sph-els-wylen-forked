@@ -8,4 +8,6 @@ urlpatterns = [
     path('users/<str:pk>', views.GetUpdateDeleteUser.as_view(), name='get_update_delete_user'),
     path('login/', views.LoginUser.as_view(), name='login_user'),
     path('logout/', views.LogoutUser.as_view(), name='logout_user'),
+    path('categories/', views.ListCreateCategory.as_view(), name='list_category'),
+    path('categories/<str:pk>', views.GetUpdateDeleteCategory.as_view(), name='get_update_delete_category'),
 ]
