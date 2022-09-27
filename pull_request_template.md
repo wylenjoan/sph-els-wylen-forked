@@ -2,7 +2,29 @@
 - Add link here
 
 #### [Commands]
-- To specify what commands the reviewer should run
+**Backend**
+
+Activate the virtual environment:
+`cd backend`
+`venv/Scripts/Activate`
+
+Install the packages listed in requirements.txt:
+`pip install -r requirements.txt`
+
+Apply migrations:
+`py manage.py migrate`
+
+Run backend:
+`py manage.py runserver`
+
+**Frontend**
+
+Install npm packages:
+`cd frontend`
+`npm install`
+
+Run frontend:
+`npm run start`
 
 
 #### [Pre-conditions]
