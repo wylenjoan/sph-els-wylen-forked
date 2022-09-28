@@ -3,6 +3,7 @@ enum ApiUrls {
   REGISTRATION = "register/",
   LOGIN = "login/",
   LOGOUT = "logout/",
+  CATEGORY = "categories/",
 }
 
 export default ApiUrls;
