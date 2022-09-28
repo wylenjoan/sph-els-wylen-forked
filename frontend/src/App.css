@@ -3,6 +3,7 @@ div.sm-container {
   width: 50%;
 }
 
-div.sm-container h2 {
+div.sm-container h2,
+div.container h2 {
   text-align: center;
 }
