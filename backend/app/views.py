@@ -80,3 +80,27 @@ class GetUpdateDeleteCategory(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
   queryset = Category.objects.all()
   serializer_class = CategorySerializer
+
+
+class ListCreateQuestion(generics.ListCreateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Question.objects.all()
+  serializer_class = QuestionSerializer
+
+
+class GetUpdateDeleteQuestion(generics.RetrieveUpdateDestroyAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Question.objects.all()
+  serializer_class = QuestionSerializer
+
+
+class ListCreateChoice(generics.ListCreateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Choice.objects.all()
+  serializer_class = ChoiceSerializer
+
+
+class GetUpdateDeleteChoice(generics.RetrieveUpdateDestroyAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Choice.objects.all()
+  serializer_class = ChoiceSerializer

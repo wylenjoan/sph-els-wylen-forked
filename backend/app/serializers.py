@@ -31,9 +31,14 @@ class UserRelationSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+  questions = serializers.SlugRelatedField(
+    many=True,
+    read_only=True,
+    slug_field='value'
+  )
   class Meta:
     model = Category
-    fields = '__all__'
+    fields = ['id', 'title', 'description', 'questions']
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -48,16 +53,21 @@ class UserActivitySerializer(serializers.ModelSerializer):
     fields = '__all__'
 
 
-class QuestionSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Question
-    fields = '__all__'
-
-
 class ChoiceSerializer(serializers.ModelSerializer):
   class Meta:
     model = Choice
-    fields = '__all__'
+    fields = ['id', 'question', 'value']
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+  choices = serializers.SlugRelatedField(
+    many=True,
+    read_only=True,
+    slug_field='value'
+  )
+  class Meta:
+    model = Question
+    fields = ['id', 'category', 'value', 'choices']
 
 
 class AnswerSerializer(serializers.ModelSerializer):

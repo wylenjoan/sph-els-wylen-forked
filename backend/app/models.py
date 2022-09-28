@@ -95,14 +95,14 @@ class UserActivity(models.Model):
 
 
 class Question(models.Model):
-  category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=False)
+  category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=False, related_name="questions")
   value = models.CharField(max_length=100, blank=False)
   created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 
 
 class Choice(models.Model):
-  question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=False)
+  question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=False, related_name="choices")
   value = models.CharField(max_length=100, blank=False)
   is_correct_answer = models.BooleanField(default=False)
   created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
