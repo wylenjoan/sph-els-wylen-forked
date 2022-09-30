@@ -14,6 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
     write_only=True,
     style={'input_type': 'password'},
   )
+  lessons = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
   class Meta:
     model = AppUser
@@ -42,9 +43,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
+  answers = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
   class Meta:
     model = Lesson
-    fields = '__all__'
+    fields = ['id', 'user', 'category', 'answers']
 
 
 class UserActivitySerializer(serializers.ModelSerializer):
@@ -73,4 +75,4 @@ class QuestionSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
   class Meta:
     model = Answer
-    fields = '__all__'
+    fields = ['id', 'lesson', 'question', 'choice', 'value', 'is_correct']

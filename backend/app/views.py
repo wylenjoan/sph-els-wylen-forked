@@ -24,11 +24,13 @@ class RegisterUser(APIView):
 
 
 class ListUser(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
   queryset = AppUser.objects.all()
   serializer_class = UserSerializer
 
 
 class GetUpdateDeleteUser(generics.RetrieveUpdateDestroyAPIView):
+  permission_classes = [IsAuthenticated]
   queryset = AppUser.objects.all()
   serializer_class = UserSerializer
 
@@ -115,3 +117,27 @@ class GetUpdateDeleteChoice(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
   queryset = Choice.objects.all()
   serializer_class = ChoiceSerializer
+
+
+class ListCreateLesson(generics.ListCreateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Lesson.objects.all()
+  serializer_class = LessonSerializer
+
+
+class GetUpdateDeleteLesson(generics.RetrieveUpdateDestroyAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Lesson.objects.all()
+  serializer_class = LessonSerializer
+
+
+class ListCreateAnswer(generics.ListCreateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Answer.objects.all()
+  serializer_class = AnswerSerializer
+
+
+class GetUpdateDeleteAnswer(generics.RetrieveUpdateDestroyAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = Answer.objects.all()
+  serializer_class = AnswerSerializer

@@ -15,4 +15,8 @@ urlpatterns = [
     path('questions/<str:pk>', views.GetUpdateDeleteQuestion.as_view(), name='get_update_delete_question'),
     path('choices/', views.ListCreateChoice.as_view(), name='list_choice'),
     path('choices/<str:pk>', views.GetUpdateDeleteChoice.as_view(), name='get_update_delete_choice'),
+    path('lessons/', views.ListCreateLesson.as_view(), name='list_lesson'),
+    path('lessons/<str:pk>', views.GetUpdateDeleteLesson.as_view(), name='get_update_delete_lesson'),
+    path('answers/', views.ListCreateAnswer.as_view(), name='list_answer'),
+    path('answers/<str:pk>', views.GetUpdateDeleteAnswer.as_view(), name='get_update_delete_answer'),
 ]
