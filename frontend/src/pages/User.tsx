@@ -1,14 +1,10 @@
-import { Button } from 'react-bootstrap'
 import { Outlet } from 'react-router-dom'
-import { logoutUser } from '../apiClient/authService'
+import Navigation from '../components/Navigation'
 
 function User() {
   return (
     <div>
-      User
-      <Button variant="primary" type="submit" onClick={logoutUser}>
-        Logout
-      </Button>
+      <Navigation />
       <Outlet />
     </div>
   )

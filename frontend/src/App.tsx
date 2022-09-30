@@ -8,6 +8,7 @@ import PrivateRoute from './pages/PrivateRoute';
 import CategoryList from './pages/admin/CategoryList';
 import UserList from './pages/admin/UserList';
 import AddCategory from './pages/admin/AddCategory';
+import Categories from './pages/user/Categories';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path={routes.CATEGORY_LIST} element={<CategoryList />} />
           <Route path={routes.ADD_CATEGORY} element={<AddCategory />} />
           <Route path={routes.USER_LIST} element={<UserList />} />
+          <Route path={routes.CATEGORIES} element={<Categories />} />
         </Route>
 
       </Routes>
