@@ -94,6 +94,17 @@ class GetUpdateDeleteQuestion(generics.RetrieveUpdateDestroyAPIView):
   serializer_class = QuestionSerializer
 
 
+class ListQuestionByCategory(generics.ListAPIView):
+  serializer_class = QuestionSerializer
+
+  def get_queryset(self):
+    queryset = Question.objects.all()
+    category = self.request.query_params.get('category')
+    if category:
+        queryset = queryset.filter(category_id=category)
+    return queryset
+
+
 class ListCreateChoice(generics.ListCreateAPIView):
   permission_classes = [IsAuthenticated]
   queryset = Choice.objects.all()

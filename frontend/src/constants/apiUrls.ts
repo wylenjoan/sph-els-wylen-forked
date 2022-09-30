@@ -5,6 +5,8 @@ enum ApiUrls {
   LOGOUT = "logout/",
   CATEGORY = "categories/",
   USER = "users/",
+  QUESTION = "questions/",
+  CHOICE = "choices/",
 }
 
 export default ApiUrls;

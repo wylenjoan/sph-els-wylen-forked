@@ -78,8 +78,6 @@ function EditCategoryModal(props: Props) {
         </Button>
         <Button variant="primary" onClick={() => {
           handleUpdate(updatedCategory);
-          handleClose();
-          window.location.reload();
         }}>
           Save Changes
         </Button>

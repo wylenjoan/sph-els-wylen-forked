@@ -56,7 +56,7 @@ class UserActivitySerializer(serializers.ModelSerializer):
 class ChoiceSerializer(serializers.ModelSerializer):
   class Meta:
     model = Choice
-    fields = ['id', 'question', 'value']
+    fields = ['id', 'question', 'value', 'is_correct_answer']
 
 
 class QuestionSerializer(serializers.ModelSerializer):

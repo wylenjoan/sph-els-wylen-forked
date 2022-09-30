@@ -34,8 +34,6 @@ function DeleteCategoryModal(props: Props) {
         </Button>
         <Button variant="danger" onClick={() => {
           handleDelete(id);
-          handleClose();
-          window.location.reload();
         }}>
           Delete
         </Button>
