@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Button, Card, ListGroup, Modal } from 'react-bootstrap';
 import { listQuestionsByCategory } from '../apiClient/questionService';
-import Question from '../interfaces/question';
+import { Question } from '../interfaces/question';
 
 interface Props {
   show: boolean,

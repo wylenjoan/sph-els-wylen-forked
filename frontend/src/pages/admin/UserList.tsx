@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { listUsers } from "../../apiClient/userService";
-import User from "../../interfaces/user";
+import { User } from "../../interfaces/user";
 
 function UserList() {
   const [users, setUsers] = useState<User[]>([]);

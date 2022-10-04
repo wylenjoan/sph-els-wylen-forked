@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import Category from '../interfaces/category';
+import { Category } from '../interfaces/category';
 
 interface Props {
   show: boolean,
@@ -18,6 +18,7 @@ function EditCategoryModal(props: Props) {
   } = props;
 
   const [updatedCategory, setUpdatedCategory] = useState<Category>({
+    id: 0,
     title: "",
     description: ""
   });

@@ -7,6 +7,8 @@ enum ApiUrls {
   USER = "users/",
   QUESTION = "questions/",
   CHOICE = "choices/",
+  LESSON = "lessons/",
+  ANSWER = "answers/",
 }
 
 export default ApiUrls;

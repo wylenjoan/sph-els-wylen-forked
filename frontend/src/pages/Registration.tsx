@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from "axios";
 import { Alert, Button, Form } from 'react-bootstrap';
-import User from '../interfaces/user';
+import { UserCreation } from '../interfaces/user';
 import { registerUser } from '../apiClient/userService';
 import { useNavigate } from 'react-router-dom';
 import routes from '../constants/routes';
@@ -16,7 +16,7 @@ function Registration() {
   };
 
   const navigate = useNavigate();
-  const [user, setUser] = useState<User>(emptyUser)
+  const [user, setUser] = useState<UserCreation>(emptyUser)
   const [error, setError] = useState<string>('')
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -52,7 +52,7 @@ function Registration() {
 
 
   return (
-    <div className='sm-container'>
+    <div className="sm-container pt-5">
       <h2>Registration</h2>
 
       <Form onSubmit={handleSubmit}>

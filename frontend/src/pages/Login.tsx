@@ -48,7 +48,7 @@ function Login() {
   ) : error
 
   return (
-    <div className='sm-container'>
+    <div className="sm-container pt-5">
       <h2>Login</h2>
 
       <Form onSubmit={handleSubmit} method="POST">

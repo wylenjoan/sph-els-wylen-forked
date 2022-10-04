@@ -1,11 +1,12 @@
 import { createContext, useState } from "react";
-import User from "../interfaces/user";
+import { User } from "../interfaces/user";
 
 const AuthContext = createContext<{
   user: User
   setUser: React.Dispatch<React.SetStateAction<User>>
 }>({
   user: {
+    id: 0,
     first_name: '',
     last_name: '',
     email: '',
@@ -17,6 +18,7 @@ const AuthContext = createContext<{
 
 export const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<User>({
+    id: 0,
     first_name: '',
     last_name: '',
     email: '',

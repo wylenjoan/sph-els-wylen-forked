@@ -1,10 +1,18 @@
 import axios from "axios";
 import { useEffect, useState } from "react"
 import { Button, Card, Col, Row } from "react-bootstrap"
+import { useNavigate } from "react-router-dom";
 import { listCategories } from "../../apiClient/categoryService";
-import Category from "../../interfaces/category"
+import { createLesson } from "../../apiClient/lessonService";
+import routes from "../../constants/routes";
+import useAuth from "../../hooks/useAuth";
+import { Category } from "../../interfaces/category"
+import { LessonCreation } from "../../interfaces/lesson";
 
 function Categories() {
+  const navigate = useNavigate()
+  const { user } = useAuth()
+
   const [categories, setCategories] = useState<Category[]>([])
 
   async function listAllCategories() {
@@ -22,6 +30,28 @@ function Categories() {
     listAllCategories();
   }, [])
 
+  function handleNavigateLesson(lessonId: number) {
+    navigate({
+      pathname: routes.LESSON,
+      search: `?id=${lessonId}`
+    })
+  }
+
+  async function createNewLesson(categoryId: number, userId: number) {
+    try {
+      const newLesson: LessonCreation = {
+        categoryId,
+        userId,
+      }
+      let response = await createLesson(newLesson);
+      handleNavigateLesson(response.data.id);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(`${err.request.status} ${err.request.statusText}`)
+      }
+    };
+  }
+
   return (
     <div className="container pt-5">
       <h2>Categories</h2>
@@ -34,7 +64,12 @@ function Categories() {
                 <Card.Text>
                   {description}
                 </Card.Text>
-                <Button variant="primary">Start lesson</Button>
+                <Button
+                  variant="primary"
+                  onClick={() => createNewLesson(id, user.id)}
+                >
+                  Start lesson
+                </Button>
               </Card.Body>
             </Card>
           </Col>

@@ -3,11 +3,13 @@ enum Routes {
   REGISTRATION = "/registration",
   LOGIN = "/login",
   // Admin Routes
-  CATEGORY_LIST = "category-list",
-  ADD_CATEGORY = "add-category",
-  USER_LIST = "user-list",
+  CATEGORY_LIST = "/category-list",
+  ADD_CATEGORY = "/add-category",
+  USER_LIST = "/user-list",
   // User Routes
-  CATEGORIES = "categories",
+  CATEGORIES = "/categories",
+  LESSON = "/lesson",
+  RESULT = "/result",
 }
 
 export default Routes;

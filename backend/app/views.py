@@ -50,6 +50,7 @@ class LoginUser(APIView):
         user = AppUser.objects.get(email=email)
 
         user_dict = {
+          "id": user.id,
           "first_name": user.first_name,
           "last_name": user.last_name,
           "email": user.email,
@@ -103,7 +104,7 @@ class ListQuestionByCategory(generics.ListAPIView):
     queryset = Question.objects.all()
     category = self.request.query_params.get('category')
     if category:
-        queryset = queryset.filter(category_id=category)
+      queryset = queryset.filter(category_id=category)
     return queryset
 
 
@@ -117,6 +118,17 @@ class GetUpdateDeleteChoice(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
   queryset = Choice.objects.all()
   serializer_class = ChoiceSerializer
+
+
+class ListChoiceByQuestion(generics.ListAPIView):
+  serializer_class = ChoiceSerializer
+
+  def get_queryset(self):
+    queryset = Choice.objects.all()
+    question = self.request.query_params.get('question')
+    if question:
+      queryset = queryset.filter(question_id=question)
+    return queryset
 
 
 class ListCreateLesson(generics.ListCreateAPIView):
@@ -141,3 +153,14 @@ class GetUpdateDeleteAnswer(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
   queryset = Answer.objects.all()
   serializer_class = AnswerSerializer
+
+
+class ListAnswerByLesson(generics.ListAPIView):
+  serializer_class = AnswerSerializer
+
+  def get_queryset(self):
+    queryset = Answer.objects.all()
+    lesson = self.request.query_params.get('lesson')
+    if lesson:
+      queryset = queryset.filter(lesson_id=lesson)
+    return queryset

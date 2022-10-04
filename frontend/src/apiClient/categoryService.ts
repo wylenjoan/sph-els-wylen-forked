@@ -1,8 +1,8 @@
 import axiosClient from ".";
 import apiUrls from "../constants/apiUrls";
-import Category from "../interfaces/category";
+import { CategoryCreation, Category } from "../interfaces/category";
 
-const createCategory = async (category: Category) => {
+const createCategory = async (category: CategoryCreation) => {
   await axiosClient.post(`${apiUrls.CATEGORY}`, category)
 }
 

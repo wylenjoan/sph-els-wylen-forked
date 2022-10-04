@@ -1,8 +1,8 @@
 import axiosClient from ".";
 import apiUrls from "../constants/apiUrls";
-import User from "../interfaces/user";
+import { UserCreation, User } from "../interfaces/user";
 
-const registerUser = async (user: User) => {
+const registerUser = async (user: UserCreation) => {
   await axiosClient.post(`${apiUrls.REGISTRATION}`, user)
 }
 

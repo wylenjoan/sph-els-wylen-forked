@@ -112,7 +112,7 @@ class Choice(models.Model):
 class Answer(models.Model):
   lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, blank=False, related_name="answers")
   question = models.ForeignKey(Question, on_delete=models.CASCADE, blank=False)
-  choice = models.OneToOneField(Choice, on_delete=models.CASCADE)
+  choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
   value = models.CharField(max_length=100, blank=False)
   is_correct = models.BooleanField(default=False)
   created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
