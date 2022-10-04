@@ -60,7 +60,16 @@ function Navigation() {
           Categories
         </NavLink>
       </Nav.Item>
-
+      <Nav.Item className="px-3">
+        <NavLink
+          to={routes.EDIT_PROFILE}
+          style={({ isActive }) =>
+            isActive ? activeStyle : defaultStyle
+          }
+        >
+          Edit Profile
+        </NavLink>
+      </Nav.Item>
     </Nav>
   )
 

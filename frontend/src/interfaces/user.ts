@@ -5,6 +5,7 @@ export interface UserCreation {
   email: string;
   password: string;
   is_admin: boolean;
+  avatar_url?: string;
 }
 
 export interface User {
@@ -12,6 +13,14 @@ export interface User {
   first_name: string;
   last_name: string;
   email: string;
-  password: string;
+  password?: string;
   is_admin: boolean;
+  avatar_url?: string;
+}
+
+export interface UserProfile {
+  id: number;
+  first_name: string;
+  last_name: string;
+  avatar_url?: string;
 }

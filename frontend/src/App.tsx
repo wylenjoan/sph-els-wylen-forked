@@ -11,6 +11,7 @@ import AddCategory from './pages/admin/AddCategory';
 import Categories from './pages/user/Categories';
 import LessonAnswer from './pages/user/LessonAnswer';
 import LessonResult from './pages/user/LessonResult';
+import EditProfile from './pages/user/EditProfile';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path={routes.CATEGORIES} element={<Categories />} />
           <Route path={routes.LESSON} element={<LessonAnswer />} />
           <Route path={routes.RESULT} element={<LessonResult />} />
+          <Route path={routes.EDIT_PROFILE} element={<EditProfile />} />
         </Route>
 
       </Routes>

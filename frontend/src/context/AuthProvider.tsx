@@ -12,6 +12,7 @@ const AuthContext = createContext<{
     email: '',
     password: '',
     is_admin: false,
+    avatar_url: '',
   },
   setUser: () => { }
 });
@@ -24,6 +25,7 @@ export const AuthProvider = ({ children }: any) => {
     email: '',
     password: '',
     is_admin: false,
+    avatar_url: '',
   });
 
   return (

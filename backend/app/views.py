@@ -54,7 +54,8 @@ class LoginUser(APIView):
           "first_name": user.first_name,
           "last_name": user.last_name,
           "email": user.email,
-          "is_admin": user.is_admin
+          "is_admin": user.is_admin,
+          "avatar_url": user.avatar_url
         }
 
         response = Response({'user': user_dict}, status=status.HTTP_200_OK)

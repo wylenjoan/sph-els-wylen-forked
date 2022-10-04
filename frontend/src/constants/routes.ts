@@ -10,6 +10,7 @@ enum Routes {
   CATEGORIES = "/categories",
   LESSON = "/lesson",
   RESULT = "/result",
+  EDIT_PROFILE = "/edit-profile",
 }
 
 export default Routes;
