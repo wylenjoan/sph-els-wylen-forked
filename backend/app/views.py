@@ -137,6 +137,16 @@ class ListCreateLesson(generics.ListCreateAPIView):
   queryset = Lesson.objects.all()
   serializer_class = LessonSerializer
 
+  def perform_create(self, serializer):
+    instance = serializer.save()
+    activity = {
+      'user': self.request.user.id,
+      'lesson': instance.id,
+    }
+    activity_serializer = UserActivitySerializer(data=activity)
+    activity_serializer.is_valid(raise_exception=True)
+    activity_serializer.save()
+
 
 class GetUpdateDeleteLesson(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
@@ -172,6 +182,16 @@ class FollowUser(generics.ListCreateAPIView):
   queryset = UserRelation.objects.all()
   serializer_class = UserRelationSerializer
 
+  def perform_create(self, serializer):
+    instance = serializer.save()
+    activity = {
+      'user': self.request.user.id,
+      'following_user': instance.following_user.id,
+    }
+    activity_serializer = UserActivitySerializer(data=activity)
+    activity_serializer.is_valid(raise_exception=True)
+    activity_serializer.save()
+
 
 class UnfollowUser(generics.DestroyAPIView):
   permission_classes = [IsAuthenticated]
@@ -198,4 +218,21 @@ class ListFollowingByUser(generics.ListAPIView):
     user = self.request.query_params.get('user')
     if user:
       queryset = queryset.filter(follower_user_id=user)
+    return queryset
+
+
+class ListActivity(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = UserActivity.objects.all()
+  serializer_class = UserActivitySerializer
+
+
+class ListActivityByUser(generics.ListAPIView):
+  serializer_class = UserActivitySerializer
+
+  def get_queryset(self):
+    queryset = UserActivity.objects.all()
+    user = self.request.query_params.get('user')
+    if user:
+      queryset = queryset.filter(user_id=user)
     return queryset

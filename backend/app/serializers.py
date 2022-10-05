@@ -22,6 +22,8 @@ class UserSerializer(serializers.ModelSerializer):
   # following_relation - who the user follows
   following_relation = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
+  activities = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
   class Meta:
     model = AppUser
     exclude= ['is_staff', 'is_active', 'date_joined', 'last_login', 

@@ -87,9 +87,9 @@ class Lesson(models.Model):
 
 
 class UserActivity(models.Model):
-  user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=False, related_name="relation_user")
-  following_user = models.OneToOneField(AppUser, on_delete=models.CASCADE, blank=True, related_name="activity_following")
-  lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE, blank=False)
+  user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=False, related_name="activities")
+  following_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, null=True)
+  lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, blank=True, null=True)
   created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 
