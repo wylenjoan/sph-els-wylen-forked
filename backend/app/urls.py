@@ -26,4 +26,9 @@ urlpatterns = [
     path('answers/', views.ListCreateAnswer.as_view(), name='list_answer'),
     path('answers/<str:pk>', views.GetUpdateDeleteAnswer.as_view(), name='get_update_delete_answer'),
     path('answers', views.ListAnswerByLesson.as_view(), name='list_answer_by_lesson'),
+
+    path('follow/', views.FollowUser.as_view(), name="follow_user"),
+    path('unfollow/<str:pk>', views.UnfollowUser.as_view(), name="unfollow_user"),
+    path('followers', views.ListFollowerByUser.as_view(), name='list_follower_by_user'),
+    path('following', views.ListFollowingByUser.as_view(), name='list_following_by_user'),
 ]

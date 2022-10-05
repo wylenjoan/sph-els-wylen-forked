@@ -16,6 +16,12 @@ class UserSerializer(serializers.ModelSerializer):
   )
   lessons = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
+  # follower_relation - the user's followers
+  follower_relation = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+  # following_relation - who the user follows
+  following_relation = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
   class Meta:
     model = AppUser
     exclude= ['is_staff', 'is_active', 'date_joined', 'last_login', 
@@ -28,7 +34,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserRelationSerializer(serializers.ModelSerializer):
   class Meta:
     model = UserRelation
-    fields = '__all__'
+    fields = ['id', 'follower_user', 'following_user']
 
 
 class CategorySerializer(serializers.ModelSerializer):

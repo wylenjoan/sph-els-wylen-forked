@@ -66,8 +66,8 @@ class AppUser(auth_models.AbstractUser):
 
 
 class UserRelation(models.Model):
-  follower_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, related_name="relation_followers")
-  following_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, related_name="relation_following")
+  follower_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, related_name="following_relation")
+  following_user = models.ForeignKey(AppUser, on_delete=models.CASCADE, blank=True, related_name="follower_relation")
   created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
 

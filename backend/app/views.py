@@ -165,3 +165,37 @@ class ListAnswerByLesson(generics.ListAPIView):
     if lesson:
       queryset = queryset.filter(lesson_id=lesson)
     return queryset
+
+
+class FollowUser(generics.ListCreateAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = UserRelation.objects.all()
+  serializer_class = UserRelationSerializer
+
+
+class UnfollowUser(generics.DestroyAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = UserRelation.objects.all()
+  serializer_class = UserRelationSerializer
+
+
+class ListFollowerByUser(generics.ListAPIView):
+  serializer_class = UserRelationSerializer
+
+  def get_queryset(self):
+    queryset = UserRelation.objects.all()
+    user = self.request.query_params.get('user')
+    if user:
+      queryset = queryset.filter(following_user_id=user)
+    return queryset
+
+
+class ListFollowingByUser(generics.ListAPIView):
+  serializer_class = UserRelationSerializer
+
+  def get_queryset(self):
+    queryset = UserRelation.objects.all()
+    user = self.request.query_params.get('user')
+    if user:
+      queryset = queryset.filter(follower_user_id=user)
+    return queryset
