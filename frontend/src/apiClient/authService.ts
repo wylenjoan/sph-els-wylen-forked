@@ -13,7 +13,8 @@ const loginUser = async (credentials: AuthCredentials) => {
   return await axiosClient.post(`${apiUrls.LOGIN}`, credentials, {
     headers: {
       "X-CSRFToken": csrfToken
-    }
+    },
+    withCredentials: true,
   });
 }
 
