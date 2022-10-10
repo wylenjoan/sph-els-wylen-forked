@@ -11,6 +11,9 @@ const axiosClient = axios.create({
   },
 });
 
-axiosClient.defaults.baseURL = process.env.NODE_ENV === 'production' ? apiUrls.PROD_ROOT : apiUrls.DEV_ROOT;
+axiosClient.defaults.withCredentials = true;
+axiosClient.defaults.baseURL = process.env.NODE_ENV === 'production'
+  ? apiUrls.PROD_ROOT
+  : apiUrls.DEV_ROOT;
 
 export default axiosClient;
