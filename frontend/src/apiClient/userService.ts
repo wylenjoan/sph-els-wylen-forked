@@ -1,9 +1,17 @@
 import axiosClient from ".";
 import apiUrls from "../constants/apiUrls";
 import { UserCreation, UserProfile } from "../interfaces/user";
+import { getCsrfToken } from "./authService";
 
 const registerUser = async (user: UserCreation) => {
-  await axiosClient.post(`${apiUrls.REGISTRATION}`, user)
+  const csrfResponse = await getCsrfToken();
+  const csrfToken = csrfResponse.data.csrfToken;
+
+  await axiosClient.post(`${apiUrls.REGISTRATION}`, user, {
+    headers: {
+      "X-CSRFToken": csrfToken
+    }
+  })
 }
 
 const listUsers = async () => {

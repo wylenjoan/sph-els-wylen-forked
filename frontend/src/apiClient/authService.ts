@@ -2,8 +2,19 @@ import axiosClient from ".";
 import apiUrls from "../constants/apiUrls";
 import AuthCredentials from "../interfaces/authCredentials";
 
+const getCsrfToken = async () => {
+  return await axiosClient.get(`${apiUrls.CSRF}`);
+}
+
 const loginUser = async (credentials: AuthCredentials) => {
-  return await axiosClient.post(`${apiUrls.LOGIN}`, credentials);
+  const csrfResponse = await getCsrfToken();
+  const csrfToken = csrfResponse.data.csrfToken;
+
+  return await axiosClient.post(`${apiUrls.LOGIN}`, credentials, {
+    headers: {
+      "X-CSRFToken": csrfToken
+    }
+  });
 }
 
 const logoutUser = async () => {
@@ -17,5 +28,6 @@ const logoutUser = async () => {
 
 export {
   loginUser,
-  logoutUser
+  logoutUser,
+  getCsrfToken,
 };

@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { useState } from 'react'
-import { Alert, Button, Form } from 'react-bootstrap';
-import AuthCredentials from '../interfaces/authCredentials';
 import { useNavigate } from 'react-router-dom';
+import { Alert, Button, Form } from 'react-bootstrap';
+import Cookies from 'js-cookie';
+import AuthCredentials from '../interfaces/authCredentials';
 import routes from '../constants/routes';
 import { loginUser } from '../apiClient/authService';
 
@@ -31,8 +32,11 @@ function Login() {
     try {
       let response = await loginUser(credentials);
       localStorage.setItem('user', JSON.stringify(response.data.user))
-      navigate(routes.ROOT, { replace: true })
-      window.location.reload()
+      const session = Cookies.get('sessionid')
+      if (session) {
+        navigate(routes.ROOT, { replace: true })
+        window.location.reload()
+      }
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(`${err.request.status} ${err.request.statusText}`);

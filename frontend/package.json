@@ -2,6 +2,11 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "main": "server.js",
+  "engines": {
+    "node": "16.x",
+    "npm": "8.x"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -12,7 +17,9 @@
     "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
+    "express": "^4.18.1",
     "js-cookie": "^3.0.1",
+    "path": "^0.12.7",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
@@ -25,7 +32,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {
     "extends": [

@@ -1,5 +1,7 @@
 enum ApiUrls {
-  ROOT = "http://127.0.0.1:8000/",
+  DEV_ROOT = "http://127.0.0.1:8000/",
+  PROD_ROOT = "https://sels-api.herokuapp.com/",
+  CSRF = "csrf/",
   REGISTRATION = "register/",
   LOGIN = "login/",
   LOGOUT = "logout/",

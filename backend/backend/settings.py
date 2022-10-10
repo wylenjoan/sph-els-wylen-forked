@@ -11,22 +11,29 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
+import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = os.environ
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d$ik-%cjcgf+w=5v6qlf^$pp88x2080en_16@s2j47h%umwy_6'
+SECRET_KEY = 'DJANGO_SECRET_KEY'
 
-# SECURITY WARNING: don't run with debug turned on in production!
+IS_HEROKU = 'DYNO' in env
+
 DEBUG = True
-
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -39,11 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
+    'whitenoise.runserver_nostatic',
     'app'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -84,6 +93,13 @@ DATABASES = {
     }
 }
 
+if "DATABASE_URL" in os.environ:
+    # Configure Django for DATABASE_URL environment variable.
+    DATABASES["default"] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+
+    # Enable test database if found in CI environment.
+    if "CI" in os.environ:
+        DATABASES["default"]["TEST"] = DATABASES["default"]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -120,22 +136,37 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "app.AppUser"
+AUTH_USER_MODEL = 'app.AppUser'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'https://sels-web-client.herokuapp.com',
 ]
 
-CORS_ORIGIN_WHITELIST = ("http://localhost:3000", 'http://127.0.0.1:3000',)
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000', 
+    'http://127.0.0.1:3000',
+    'https://sels-web-client.herokuapp.com',
+)
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "http://localhost:8000", 'http://127.0.0.1:3000',]
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000', 
+    'http://localhost:8000', 
+    'http://127.0.0.1:3000',
+    'https://sels-web-client.herokuapp.com',
+]
 
 CORS_ALLOW_METHODS = [
     "DELETE",
@@ -158,13 +189,19 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
 ]
 
-CSRF_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SAMESITE = "Lax"
+CORS_EXPOSE_HEADERS = [
+  "Content-Type", 
+  "X-CSRFToken"
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 CSRF_COOKIE_NAME = "csrftoken"
 
 CSRF_COOKIE_HTTPONLY = False
-SESSION_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
 
-CORS_EXPOSE_HEADERS = ["Content-Type", "X-CSRFToken"]
-CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
