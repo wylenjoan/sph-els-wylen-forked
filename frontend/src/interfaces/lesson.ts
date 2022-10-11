@@ -1,13 +1,13 @@
+import { Answer } from './answer';
 export interface LessonCreation {
-  id?: number,
   userId: number,
   categoryId: number,
-  answers?: number[]
 }
 
 export interface Lesson {
   id: number,
   userId: number,
   categoryId: number,
-  answers: number[]
+  categoryTitle: string,
+  answers: Answer[]
 }

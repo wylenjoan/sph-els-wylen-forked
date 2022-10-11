@@ -3,13 +3,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button, Col, Row, Stack } from 'react-bootstrap'
 import { Category } from '../../interfaces/category';
-import { Question } from '../../interfaces/question';
 import { Lesson } from '../../interfaces/lesson'
 import { AnswerCreation } from '../../interfaces/answer';
 import { getLesson } from '../../apiClient/lessonService';
 import { getCategory } from '../../apiClient/categoryService';
-import { listQuestionsByCategory } from '../../apiClient/questionService';
-import { listChoicesByQuestion } from '../../apiClient/choiceService';
 import { createAnswer } from '../../apiClient/answerService';
 import routes from '../../constants/routes';
 
@@ -22,57 +19,51 @@ function LessonAnswer() {
     id: 0,
     userId: 0,
     categoryId: 0,
+    categoryTitle: "",
     answers: []
   })
   const [category, setCategory] = useState<Category>({
     id: 0,
     title: "",
-    description: ""
+    description: "",
+    questions: [{
+      id: 0,
+      category: 0,
+      value: '',
+      choices: [{
+        id: 0,
+        question: 0,
+        value: '',
+        is_correct_answer: false,
+      }]
+    }]
   })
-  const [words, setWords] = useState<Question[]>([])
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  async function getCurrentLesson(id: number) {
+  async function getCurrentLessonAndCategory() {
     try {
-      const responseData = (await getLesson(id)).data;
-      const lessonData: Lesson = {
-        id: responseData.id,
-        userId: responseData.user,
-        categoryId: responseData.category,
-        answers: responseData.answers
-      };
+      const lessonResponse = await getLesson(lessonId);
+      const lessonData = lessonResponse.data;
       if (lessonData) {
-        setLesson(lessonData);
-        getCurrentCategory(lessonData.categoryId);
-        listWordsFromCategory(lessonData.categoryId);
-      }
+        setLesson({
+          id: lessonData.id,
+          userId: lessonData.user,
+          categoryId: lessonData.category,
+          answers: lessonData.answers,
+          categoryTitle: lessonData.category_title
+        });
 
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.log(`${err.request.status} ${err.request.statusText}`)
+        const categoryResponse = await getCategory(lessonData.category);
+        const categoryData = categoryResponse.data;
+        if (category) {
+          setCategory({
+            id: categoryData.id,
+            title: categoryData.title,
+            description: categoryData.description,
+            questions: categoryData.questions
+          });
+        }
       }
-    }
-  }
-
-  async function getCurrentCategory(categoryId: number) {
-    try {
-      const response = await getCategory(categoryId);
-      const category = response.data;
-      if (category) {
-        setCategory(category);
-      }
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        console.log(`${err.request.status} ${err.request.statusText}`)
-      }
-    }
-  }
-
-  async function listWordsFromCategory(categoryId: number) {
-    try {
-      const response = await listQuestionsByCategory(categoryId);
-      const wordsData = response.data;
-      setWords(wordsData);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(`${err.request.status} ${err.request.statusText}`)
@@ -81,30 +72,25 @@ function LessonAnswer() {
   }
 
   useEffect(() => {
-    if (lessonId) {
-      getCurrentLesson(lessonId);
-      setCurrentIndex(0);
-    }
+    getCurrentLessonAndCategory()
   }, [lessonId])
 
 
-  async function handleClick(index: number, questionId: number) {
-    if (currentIndex < words.length) {
+  async function handleClick(index: number) {
+    if (currentIndex < category.questions.length) {
       try {
-        const response = await listChoicesByQuestion(questionId);
-        const choicesData = response.data;
-        const selectedChoice = choicesData[index];
+        const selectedChoice = category.questions[currentIndex].choices[index];
         if (selectedChoice) {
           const answer: AnswerCreation = {
             lesson: lesson.id,
-            question: questionId,
+            question: category.questions[currentIndex].id,
             choice: selectedChoice.id,
             value: selectedChoice.value,
             is_correct: selectedChoice.is_correct_answer
           }
           await createAnswer(answer);
           setCurrentIndex(prevState => prevState + 1);
-          if (currentIndex + 1 === words.length) {
+          if (currentIndex + 1 === category.questions.length) {
             navigate({
               pathname: routes.RESULT,
               search: `?lesson=${lessonId}`
@@ -119,29 +105,33 @@ function LessonAnswer() {
     }
   }
 
-  const renderQuestion = words.length && (
+  const renderQuestion = category.questions.length ? (
     <div className="pt-5">
-      <h1>{words[currentIndex].value}</h1>
+      <h1>{category.questions[currentIndex].value}</h1>
       <Row xs={1} md={2} className="g-2 pt-5">
-        {words[currentIndex].choices.map((choice, index) => (
+        {category.questions[currentIndex].choices.map((choice, index) => (
           <Col className="d-grid" key={index}>
             <Button
               variant="outline-primary"
-              onClick={() => handleClick(index, words[currentIndex].id)}
+              onClick={() => handleClick(index)}
             >
-              {choice}
+              {choice.value}
             </Button>
           </Col>
         ))}
       </Row>
     </div>
-  )
+  ) : <p className="fst-italic text-center">No questions in this category yet</p>
+
+  const renderProgress = category.questions.length ? (
+    <h5>{currentIndex + 1} out of {category.questions.length}</h5>
+  ) : ''
 
   return (
     <div className="sm-container pt-5">
       <Stack direction="horizontal">
-        <h5 className="me-auto">{category.title}</h5>
-        <h5>{currentIndex + 1} out of {words.length}</h5>
+        <h5 className="me-auto">{lesson.categoryTitle}</h5>
+        {renderProgress}
       </Stack>
       {renderQuestion}
     </div>

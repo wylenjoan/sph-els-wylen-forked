@@ -1,6 +1,6 @@
 import axiosClient from ".";
 import apiUrls from "../constants/apiUrls";
-import { CategoryCreation, Category } from "../interfaces/category";
+import { CategoryCreation } from "../interfaces/category";
 
 const createCategory = async (category: CategoryCreation) => {
   await axiosClient.post(`${apiUrls.CATEGORY}`, category)
@@ -14,7 +14,7 @@ const getCategory = async (id: number) => {
   return await axiosClient.get(`${apiUrls.CATEGORY}${id}`)
 }
 
-const updateCategory = async (category: Category) => {
+const updateCategory = async (category: CategoryCreation) => {
   const { id, title, description } = category;
 
   return await axiosClient.patch(

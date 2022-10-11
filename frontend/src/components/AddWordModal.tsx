@@ -18,13 +18,15 @@ function AddWordModal(props: Props) {
     handleCreateQuestionWithChoices,
   } = props;
 
+  const emptyChoiceValues = [
+    { value: "", is_correct_answer: false },
+    { value: "", is_correct_answer: false },
+    { value: "", is_correct_answer: false },
+    { value: "", is_correct_answer: false },
+  ]
+
   const [word, setWord] = useState<QuestionCreation>({ value: "" });
-  const [choices, setChoices] = useState<ChoiceCreation[]>([
-    { value: "", is_correct_answer: false },
-    { value: "", is_correct_answer: false },
-    { value: "", is_correct_answer: false },
-    { value: "", is_correct_answer: false },
-  ]);
+  const [choices, setChoices] = useState<ChoiceCreation[]>(emptyChoiceValues);
 
   useEffect(() => {
     setWord(prevState => ({
@@ -32,6 +34,12 @@ function AddWordModal(props: Props) {
       category: categoryId
     }))
   }, [categoryId])
+
+  function handleCloseModal() {
+    setChoices(emptyChoiceValues);
+    setWord({ value: "" });
+    handleClose();
+  }
 
   function handleWordInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const {
@@ -71,7 +79,7 @@ function AddWordModal(props: Props) {
       centered
       backdrop="static"
       show={show}
-      onHide={handleClose}
+      onHide={handleCloseModal}
     >
       <Modal.Header closeButton>
         <Modal.Title>Add new word</Modal.Title>
@@ -120,7 +128,7 @@ function AddWordModal(props: Props) {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="light" onClick={handleClose}>
+        <Button variant="light" onClick={handleCloseModal}>
           Cancel
         </Button>
         <Button variant="secondary" onClick={() => {

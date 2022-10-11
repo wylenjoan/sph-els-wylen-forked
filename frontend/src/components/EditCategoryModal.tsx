@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
-import { Category } from '../interfaces/category';
+import { Category, CategoryCreation } from '../interfaces/category';
 
 interface Props {
   show: boolean,
   category: Category,
   handleClose: () => void,
-  handleUpdate: (category: Category) => void,
+  handleUpdate: (category: CategoryCreation) => void,
 }
 
 function EditCategoryModal(props: Props) {
@@ -17,14 +17,18 @@ function EditCategoryModal(props: Props) {
     handleUpdate
   } = props;
 
-  const [updatedCategory, setUpdatedCategory] = useState<Category>({
+  const [updatedCategory, setUpdatedCategory] = useState<CategoryCreation>({
     id: 0,
     title: "",
     description: ""
   });
 
   useEffect(() => {
-    setUpdatedCategory(category)
+    setUpdatedCategory({
+      id: category.id,
+      title: category.title,
+      description: category.description
+    })
   }, [category])
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
