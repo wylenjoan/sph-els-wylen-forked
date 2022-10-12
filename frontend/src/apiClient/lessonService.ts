@@ -14,7 +14,12 @@ const getLesson = async (id: number) => {
   return await axiosClient.get(`${apiUrls.LESSON}${id}`)
 }
 
+const listLessonsByUser = async (userId: number) => {
+  return await axiosClient.get(`lessons?user=${userId}`)
+}
+
 export {
   createLesson,
   getLesson,
+  listLessonsByUser,
 }

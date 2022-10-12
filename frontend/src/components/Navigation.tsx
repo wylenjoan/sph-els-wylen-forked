@@ -70,6 +70,16 @@ function Navigation() {
           Edit Profile
         </NavLink>
       </Nav.Item>
+      <Nav.Item className="px-3">
+        <NavLink
+          to={routes.WORDS_LEARNED}
+          style={({ isActive }) =>
+            isActive ? activeStyle : defaultStyle
+          }
+        >
+          Words Learned
+        </NavLink>
+      </Nav.Item>
     </Nav>
   )
 

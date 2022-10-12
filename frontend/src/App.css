@@ -29,13 +29,21 @@ div.container h2 {
   color: white;
   border-radius: 100px;
   margin: 16px auto;
+  text-align: center;
+}
+
+.md-avatar,
+.sm-avatar {
+  object-fit: cover;
+  border-radius: 100px;
+}
+
+.md-avatar {
   height: 200px;
   width: 200px;
 }
 
-.avatar {
-  height: 200px;
-  width: 200px;
-  object-fit: cover;
-  border-radius: 100px;
+.sm-avatar {
+  height: 100px;
+  width: 100px;
 }

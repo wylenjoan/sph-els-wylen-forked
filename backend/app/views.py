@@ -154,6 +154,17 @@ class GetUpdateDeleteLesson(generics.RetrieveUpdateDestroyAPIView):
   serializer_class = LessonSerializer
 
 
+class ListLessonByUser(generics.ListAPIView):
+  serializer_class = LessonSerializer
+
+  def get_queryset(self):
+    queryset = Lesson.objects.all()
+    user = self.request.query_params.get('user')
+    if user:
+      queryset = queryset.filter(user_id=user)
+    return queryset
+
+
 class ListCreateAnswer(generics.ListCreateAPIView):
   permission_classes = [IsAuthenticated]
   queryset = Answer.objects.all()

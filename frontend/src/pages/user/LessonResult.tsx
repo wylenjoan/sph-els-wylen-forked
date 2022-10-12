@@ -5,6 +5,8 @@ import { Stack, Table } from 'react-bootstrap'
 import { Lesson } from '../../interfaces/lesson';
 import { Answer } from '../../interfaces/answer';
 import { getLesson } from '../../apiClient/lessonService';
+import CorrectIcon from '../../components/CorrectIcon';
+import WrongIcon from '../../components/WrongIcon';
 
 
 function LessonResult() {
@@ -47,9 +49,6 @@ function LessonResult() {
     }
   }, [lessonId]);
 
-  const correctIcon = <i className="bi-check-circle-fill correct"></i>;
-  const wrongIcon = <i className="bi-x-octagon-fill wrong"></i>;
-
   return (
     <div className="sm-container pt-5">
       <Stack direction="horizontal">
@@ -67,7 +66,7 @@ function LessonResult() {
         <tbody>
           {lesson.answers.map(({ id, value, is_correct, question_value }) => (
             <tr key={id}>
-              <td>{is_correct ? correctIcon : wrongIcon}</td>
+              <td>{is_correct ? <CorrectIcon /> : <WrongIcon />}</td>
               <td>{question_value}</td>
               <td>{value}</td>
             </tr>
