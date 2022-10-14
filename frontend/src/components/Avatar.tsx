@@ -11,7 +11,7 @@ function Avatar(props: Props) {
       {
         avatarUrl
           ? (<img src={avatarUrl} alt="avatar" className={className} />)
-          : 'Add Avatar URL'
+          : 'No avatar'
       }
     </div>
   )

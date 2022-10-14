@@ -84,7 +84,9 @@ function EditProfile() {
     <div className="sm-container pt-5">
       <h2>Edit My Profile</h2>
 
-      <Avatar avatarUrl={user.avatar_url} className="md-avatar" />
+      <div className="d-flex justify-content-center my-4">
+        <Avatar avatarUrl={user.avatar_url} className="md-avatar" />
+      </div>
 
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="first_name">

@@ -71,8 +71,8 @@ function WordsLearned() {
 
   return (
     <div className="sm-container d-flex flex-column pt-5">
-      <div className="d-flex align-items-center m-auto">
-        <Avatar avatarUrl={user.avatar_url} className="sm-avatar me-5" />
+      <div className="d-flex align-items-center gap-5 m-auto">
+        <Avatar avatarUrl={user.avatar_url} className="sm-avatar" />
         <div>
           <h5>{user.first_name} {user.last_name}</h5>
           <p>Learned {wordsNum} words</p>

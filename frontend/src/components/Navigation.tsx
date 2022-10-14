@@ -80,6 +80,16 @@ function Navigation() {
           Words Learned
         </NavLink>
       </Nav.Item>
+      <Nav.Item className="px-3">
+        <NavLink
+          to={`${routes.PROFILE}?user=${user.id}`}
+          style={({ isActive }) =>
+            isActive ? activeStyle : defaultStyle
+          }
+        >
+          Profile
+        </NavLink>
+      </Nav.Item>
     </Nav>
   )
 

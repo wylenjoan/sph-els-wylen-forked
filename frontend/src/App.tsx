@@ -13,6 +13,7 @@ import LessonAnswer from './pages/user/LessonAnswer';
 import LessonResult from './pages/user/LessonResult';
 import EditProfile from './pages/user/EditProfile';
 import WordsLearned from './pages/user/WordsLearned';
+import Profile from './pages/user/Profile';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path={routes.RESULT} element={<LessonResult />} />
           <Route path={routes.EDIT_PROFILE} element={<EditProfile />} />
           <Route path={routes.WORDS_LEARNED} element={<WordsLearned />} />
+          <Route path={routes.PROFILE} element={<Profile />} />
         </Route>
 
       </Routes>
