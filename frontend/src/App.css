@@ -28,14 +28,55 @@ div.container h2 {
   background-color: gray;
   color: white;
   border-radius: 100px;
-  margin: 16px auto;
+  text-align: center;
+}
+
+.md-avatar,
+.sm-avatar {
+  object-fit: cover;
+  border-radius: 100px;
+  user-select: none;
+}
+
+.md-avatar {
   height: 200px;
   width: 200px;
 }
 
-.avatar {
-  height: 200px;
-  width: 200px;
-  object-fit: cover;
-  border-radius: 100px;
+.sm-avatar {
+  height: 100px;
+  width: 100px;
+}
+
+.activity-container {
+  display: flex;
+  align-items: center;
+  margin: 16px auto;
+  padding: 16px;
+  border: solid 1px lightgray;
+  border-radius: 16px;
+  gap: 32px;
+}
+
+.activity-detail {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.caption {
+  color: gray;
+}
+
+.caption:first-letter {
+  text-transform: uppercase;
+}
+
+.btn-link {
+  color: var(--bs-dark) !important;
+  text-decoration: none !important;
+  padding: 0 !important;
+}
+
+.btn-link:hover {
+  text-decoration: underline !important;
 }

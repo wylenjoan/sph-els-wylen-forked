@@ -27,8 +27,13 @@ const updateUser = async (user: UserProfile) => {
   });
 }
 
+const getUserProfile = async (userId: number) => {
+  return await axiosClient.get(`${apiUrls.PROFILE}${userId}`)
+}
+
 export {
   registerUser,
   listUsers,
   updateUser,
+  getUserProfile,
 };

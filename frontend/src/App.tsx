@@ -12,6 +12,9 @@ import Categories from './pages/user/Categories';
 import LessonAnswer from './pages/user/LessonAnswer';
 import LessonResult from './pages/user/LessonResult';
 import EditProfile from './pages/user/EditProfile';
+import WordsLearned from './pages/user/WordsLearned';
+import Profile from './pages/user/Profile';
+import Dashboard from './pages/user/Dashboard';
 
 
 function App() {
@@ -29,6 +32,9 @@ function App() {
           <Route path={routes.LESSON} element={<LessonAnswer />} />
           <Route path={routes.RESULT} element={<LessonResult />} />
           <Route path={routes.EDIT_PROFILE} element={<EditProfile />} />
+          <Route path={routes.WORDS_LEARNED} element={<WordsLearned />} />
+          <Route path={routes.PROFILE} element={<Profile />} />
+          <Route path={routes.DASHBOARD} element={<Dashboard />} />
         </Route>
 
       </Routes>

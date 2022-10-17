@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import generics, serializers, status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -10,7 +10,7 @@ from .models import *
 from .serializers import *
 
 
-@api_view()
+@api_view(['GET'])
 def csrf(request):
   return Response({'csrfToken': get_token(request)})
 
@@ -33,6 +33,12 @@ class GetUpdateDeleteUser(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
   queryset = AppUser.objects.all()
   serializer_class = UserSerializer
+
+
+class GetUserProfile(generics.RetrieveAPIView):
+  permission_classes = [IsAuthenticated]
+  queryset = AppUser.objects.all()
+  serializer_class = UserProfileSerializer
 
 
 class LoginUser(APIView):
@@ -99,6 +105,7 @@ class GetUpdateDeleteQuestion(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListQuestionByCategory(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
   serializer_class = QuestionSerializer
 
   def get_queryset(self):
@@ -122,6 +129,7 @@ class GetUpdateDeleteChoice(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListChoiceByQuestion(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
   serializer_class = ChoiceSerializer
 
   def get_queryset(self):
@@ -140,7 +148,7 @@ class ListCreateLesson(generics.ListCreateAPIView):
   def perform_create(self, serializer):
     instance = serializer.save()
     activity = {
-      'user': self.request.user.id,
+      'user': instance.user.id,
       'lesson': instance.id,
     }
     activity_serializer = UserActivitySerializer(data=activity)
@@ -152,6 +160,18 @@ class GetUpdateDeleteLesson(generics.RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticated]
   queryset = Lesson.objects.all()
   serializer_class = LessonSerializer
+
+
+class ListLessonByUser(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
+  serializer_class = LessonSerializer
+
+  def get_queryset(self):
+    queryset = Lesson.objects.all()
+    user = self.request.query_params.get('user')
+    if user:
+      queryset = queryset.filter(user_id=user)
+    return queryset
 
 
 class ListCreateAnswer(generics.ListCreateAPIView):
@@ -167,6 +187,7 @@ class GetUpdateDeleteAnswer(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListAnswerByLesson(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
   serializer_class = AnswerSerializer
 
   def get_queryset(self):
@@ -183,10 +204,11 @@ class FollowUser(generics.ListCreateAPIView):
   serializer_class = UserRelationSerializer
 
   def perform_create(self, serializer):
+    serializer.is_valid(raise_exception=True)
     instance = serializer.save()
     activity = {
-      'user': self.request.user.id,
-      'following_user': instance.following_user.id,
+      'user': instance.follower_user.id,
+      'following_relation': instance.id,
     }
     activity_serializer = UserActivitySerializer(data=activity)
     activity_serializer.is_valid(raise_exception=True)
@@ -200,7 +222,8 @@ class UnfollowUser(generics.DestroyAPIView):
 
 
 class ListFollowerByUser(generics.ListAPIView):
-  serializer_class = UserRelationSerializer
+  permission_classes = [IsAuthenticated]
+  serializer_class = FollowerSerializer
 
   def get_queryset(self):
     queryset = UserRelation.objects.all()
@@ -211,7 +234,8 @@ class ListFollowerByUser(generics.ListAPIView):
 
 
 class ListFollowingByUser(generics.ListAPIView):
-  serializer_class = UserRelationSerializer
+  permission_classes = [IsAuthenticated]
+  serializer_class = FollowingSerializer
 
   def get_queryset(self):
     queryset = UserRelation.objects.all()
@@ -228,6 +252,7 @@ class ListActivity(generics.ListAPIView):
 
 
 class ListActivityByUser(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
   serializer_class = UserActivitySerializer
 
   def get_queryset(self):
@@ -236,3 +261,65 @@ class ListActivityByUser(generics.ListAPIView):
     if user:
       queryset = queryset.filter(user_id=user)
     return queryset
+
+
+class ListActivityByUserAndFollowing(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
+  serializer_class = UserActivitySerializer
+
+  def get_queryset(self):
+    all_activities = UserActivity.objects.all()
+    all_relations = UserRelation.objects.all()
+    user = self.request.query_params.get('user')
+
+    if user:
+      filtered_activities = all_activities.filter(user_id=user)
+      following_relations = all_relations.filter(follower_user_id=user)
+
+      for item in following_relations:
+        activities_by_following = all_activities.filter(user_id=item.following_user)
+        filtered_activities = filtered_activities | activities_by_following
+      
+      all_activities = filtered_activities.order_by('updated_at')
+
+    return all_activities
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_relation_exists(request):
+  all_relations = UserRelation.objects.all()
+  follower = request.query_params.get('follower')
+  following = request.query_params.get('following')
+  exists = all_relations.filter(follower_user_id=follower, following_user_id=following).exists()
+  return Response({'exists': exists})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_relation(request):
+  all_relations = UserRelation.objects.all()
+  follower = request.query_params.get('follower')
+  following = request.query_params.get('following')
+  if follower and following:
+    relation = all_relations.get(follower_user=follower, following_user=following)
+    relation_serializer = UserRelationSerializer(relation)
+    return Response(relation_serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_words_lessons_number(request):
+  lessons = Lesson.objects.all()
+  user = request.query_params.get('user')
+  if user:
+    lessons = lessons.filter(user_id=user)
+    lessons_learned = lessons.count()
+    words_learned = 0
+    for item in lessons:
+      words_learned += item.answers.count()
+
+  return Response({
+    'lessons_learned': lessons_learned,
+    'words_learned': words_learned,
+  })

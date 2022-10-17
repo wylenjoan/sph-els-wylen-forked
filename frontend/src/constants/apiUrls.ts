@@ -7,10 +7,13 @@ enum ApiUrls {
   LOGOUT = "logout/",
   CATEGORY = "categories/",
   USER = "users/",
+  PROFILE = "profile/",
   QUESTION = "questions/",
   CHOICE = "choices/",
   LESSON = "lessons/",
   ANSWER = "answers/",
+  FOLLOW = "follow/",
+  UNFOLLOW = "unfollow/",
 }
 
 export default ApiUrls;

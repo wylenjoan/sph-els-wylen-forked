@@ -4,6 +4,7 @@ import { Alert, Button, Form } from "react-bootstrap"
 import useAuth from "../../hooks/useAuth"
 import { updateUser } from "../../apiClient/userService";
 import { UserProfile } from "../../interfaces/user";
+import Avatar from "../../components/Avatar";
 
 
 function EditProfile() {
@@ -79,16 +80,12 @@ function EditProfile() {
     </Alert>
   )
 
-  const renderAvatar = user.avatar_url ? (
-    <img src={user.avatar_url} alt="avatar" className="avatar" />
-  ) : 'Add Avatar URL'
-
   return (
     <div className="sm-container pt-5">
       <h2>Edit My Profile</h2>
 
-      <div className="avatar-container">
-        {renderAvatar}
+      <div className="d-flex justify-content-center my-4">
+        <Avatar avatarUrl={user.avatar_url} className="md-avatar" />
       </div>
 
       <Form onSubmit={handleSubmit}>
