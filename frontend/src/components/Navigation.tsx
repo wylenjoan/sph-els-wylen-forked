@@ -1,97 +1,51 @@
-import { Button, Container, Nav, Navbar } from "react-bootstrap"
-import { NavLink } from "react-router-dom"
-import { logoutUser } from "../apiClient/authService"
-import routes from "../constants/routes"
-import useAuth from "../hooks/useAuth"
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { logoutUser } from "../apiClient/authService";
+import routes from "../constants/routes";
+import useAuth from "../hooks/useAuth";
+import NavItem from "./NavItem";
 
 function Navigation() {
-  const { user } = useAuth()
-  let defaultStyle = {
-    textDecoration: "none",
-    color: "gray"
-  };
-  let activeStyle = {
-    textDecoration: "none",
-    fontWeight: "bold"
-  };
+  const { user } = useAuth();
 
   const renderNav = user.is_admin ? (
     <Nav className="me-auto">
-      <Nav.Item className="px-3">
-        <NavLink
-          to={routes.CATEGORY_LIST}
-          style={({ isActive }) =>
-            isActive ? activeStyle : defaultStyle
-          }
-        >
-          Category List
-        </NavLink>
-      </Nav.Item>
-      <Nav.Item className="px-3">
-        <NavLink
-          to={routes.ADD_CATEGORY}
-          style={({ isActive }) =>
-            isActive ? activeStyle : defaultStyle
-          }
-        >
-          Add Category
-        </NavLink>
-      </Nav.Item>
-      <Nav.Item className="px-3">
-        <NavLink
-          to={routes.USER_LIST}
-          style={({ isActive }) =>
-            isActive ? activeStyle : defaultStyle
-          }
-        >
-          User List
-        </NavLink>
-      </Nav.Item>
+      <NavItem
+        route={routes.CATEGORY_LIST}
+        label="Category List"
+      />
+      <NavItem
+        route={routes.ADD_CATEGORY}
+        label="Add Category"
+      />
+      <NavItem
+        route={routes.USER_LIST}
+        label="User List"
+      />
     </Nav>
   ) : (
     <Nav className="me-auto">
-      <Nav.Item className="px-3">
-        <NavLink
-          to={routes.CATEGORIES}
-          style={({ isActive }) =>
-            isActive ? activeStyle : defaultStyle
-          }
-        >
-          Categories
-        </NavLink>
-      </Nav.Item>
-      <Nav.Item className="px-3">
-        <NavLink
-          to={routes.EDIT_PROFILE}
-          style={({ isActive }) =>
-            isActive ? activeStyle : defaultStyle
-          }
-        >
-          Edit Profile
-        </NavLink>
-      </Nav.Item>
-      <Nav.Item className="px-3">
-        <NavLink
-          to={routes.WORDS_LEARNED}
-          style={({ isActive }) =>
-            isActive ? activeStyle : defaultStyle
-          }
-        >
-          Words Learned
-        </NavLink>
-      </Nav.Item>
-      <Nav.Item className="px-3">
-        <NavLink
-          to={`${routes.PROFILE}?user=${user.id}`}
-          style={({ isActive }) =>
-            isActive ? activeStyle : defaultStyle
-          }
-        >
-          Profile
-        </NavLink>
-      </Nav.Item>
+      <NavItem
+        route={routes.DASHBOARD}
+        label="Dashboard"
+      />
+      <NavItem
+        route={`${routes.PROFILE}?user=${user.id}`}
+        label="Profile"
+      />
+      <NavItem
+        route={routes.EDIT_PROFILE}
+        label="Edit Profile"
+      />
+      <NavItem
+        route={routes.CATEGORIES}
+        label="Categories"
+      />
+      <NavItem
+        route={routes.WORDS_LEARNED}
+        label="Words Learned"
+      />
     </Nav>
-  )
+  );
 
   return (
     <Navbar bg="light" expand="lg">
@@ -109,7 +63,7 @@ function Navigation() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  )
+  );
 }
 
-export default Navigation
+export default Navigation;

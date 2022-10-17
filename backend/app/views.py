@@ -263,6 +263,28 @@ class ListActivityByUser(generics.ListAPIView):
     return queryset
 
 
+class ListActivityByUserAndFollowing(generics.ListAPIView):
+  permission_classes = [IsAuthenticated]
+  serializer_class = UserActivitySerializer
+
+  def get_queryset(self):
+    all_activities = UserActivity.objects.all()
+    all_relations = UserRelation.objects.all()
+    user = self.request.query_params.get('user')
+
+    if user:
+      filtered_activities = all_activities.filter(user_id=user)
+      following_relations = all_relations.filter(follower_user_id=user)
+
+      for item in following_relations:
+        activities_by_following = all_activities.filter(user_id=item.following_user)
+        filtered_activities = filtered_activities | activities_by_following
+      
+      all_activities = filtered_activities.order_by('updated_at')
+
+    return all_activities
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def check_relation_exists(request):
@@ -283,3 +305,21 @@ def get_relation(request):
     relation = all_relations.get(follower_user=follower, following_user=following)
     relation_serializer = UserRelationSerializer(relation)
     return Response(relation_serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_words_lessons_number(request):
+  lessons = Lesson.objects.all()
+  user = request.query_params.get('user')
+  if user:
+    lessons = lessons.filter(user_id=user)
+    lessons_learned = lessons.count()
+    words_learned = 0
+    for item in lessons:
+      words_learned += item.answers.count()
+
+  return Response({
+    'lessons_learned': lessons_learned,
+    'words_learned': words_learned,
+  })

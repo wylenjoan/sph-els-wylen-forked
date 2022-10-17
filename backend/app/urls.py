@@ -35,9 +35,12 @@ urlpatterns = [
 
     path('activities/', views.ListActivity.as_view(), name='list_create_activity'),
     path('activities', views.ListActivityByUser.as_view(), name='list_activity_by_user'),
+    path('dashboard', views.ListActivityByUserAndFollowing.as_view(), name='list_activity_dashboard'),
 
     path('profile/<str:pk>', views.GetUserProfile.as_view(), name='get_user_profile'),
 
     path('relation_exists', views.check_relation_exists, name='check_relation_exists'),
     path('get_relation', views.get_relation, name='get_relation'),
+    path('get_lessons_words_learned', views.get_words_lessons_number, name='get_lessons_words_learned'),
+
 ]

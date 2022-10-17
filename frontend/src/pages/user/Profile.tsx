@@ -5,12 +5,13 @@ import { useSearchParams } from "react-router-dom";
 import { listActivitiesByUser } from "../../apiClient/activityService";
 import { checkRelationExists, followUser, unfollowUser } from "../../apiClient/relationService";
 import { getUserProfile } from "../../apiClient/userService";
+import ActivityList from "../../components/ActivityList";
 import Avatar from "../../components/Avatar";
 import FollowListModal from "../../components/FollowListModal";
 import useAuth from "../../hooks/useAuth";
 import { Activity } from "../../interfaces/activity";
 import { UserProfileRelations } from "../../interfaces/user";
-import formatRelativeDate from "../../utils/formatRelativeDate";
+
 
 function Profile() {
   const { user } = useAuth();
@@ -127,43 +128,6 @@ function Profile() {
     }
   }
 
-
-  const renderActivities = activities && (
-    activities.map(({
-      id,
-      userName,
-      userAvatarUrl,
-      followingRelationId,
-      followingUserName,
-      lessonId,
-      lessonTitle,
-      lessonScore,
-      lessonTotal,
-      updatedAt
-    }) => (
-      <div key={id} className="activity-container">
-        <Avatar className="sm-avatar" avatarUrl={userAvatarUrl} />
-        <div>
-          {
-            followingRelationId &&
-            <p className="activity-detail">
-              <strong>{userName}</strong> followed <strong>{followingUserName}</strong>
-            </p>
-          }
-          {
-            lessonId &&
-            <p className="activity-detail">
-              <strong>{userName}</strong> learned {lessonScore} of {lessonTotal} words in <strong>{lessonTitle}</strong>
-            </p>
-          }
-          <p className="caption">
-            {formatRelativeDate(updatedAt)}
-          </p>
-        </div>
-      </div>
-    ))
-  );
-
   const renderButton = user.id !== userParamsId && (
     isFollowing ? (
       <button
@@ -213,7 +177,7 @@ function Profile() {
 
       <div className="flex-fill mt-3">
         <h2>Activities</h2>
-        {renderActivities}
+        <ActivityList activities={activities} />
       </div>
 
       <FollowListModal

@@ -13,6 +13,7 @@ enum Routes {
   EDIT_PROFILE = "/edit-profile",
   WORDS_LEARNED = "/words-learned",
   PROFILE = "/profile",
+  DASHBOARD = "/dashboard",
 }
 
 export default Routes;
